@@ -26,8 +26,8 @@ async def help(ctx, tohelp='all'):
         await ctx.send(embed=embed)
 
 @bot.command()
-async def say(ctx, first='使用方法 ： `s!say 文字列`', *args):
-    await ctx.send(first + ' ' + ' '.join(args))
+async def say(ctx, *, arg='使用方法 ： `s!say 文字列`'):
+    await ctx.send(arg)
 
 @bot.command()
 async def check(ctx):
