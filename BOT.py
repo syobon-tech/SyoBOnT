@@ -15,10 +15,10 @@ async def help(ctx, tohelp='all'):
         embed.add_field(name='s!help', value='この一覧を表示します。', inline=False)
         await ctx.send(embed=embed)
     if tohelp == 'say':
-        embed = discord.Embed(title='使用方法　s!say 文字列', description='任意のテキストを送信します。現在、空白は二個まで対応しています。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 ： `s!say 文字列`', description='任意のテキストを送信します。現在、空白は二個まで対応しています。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'check':
-        embed = discord.Embed(title='使用方法　s!check', description='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 : `s!check`', description='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', color=0x3daee9)
         await ctx.send(embed=embed)
 
 @bot.command()
