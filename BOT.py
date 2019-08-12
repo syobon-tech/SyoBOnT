@@ -5,9 +5,8 @@ bot = commands.Bot(command_prefix='s!')
 
 # コマンド
 @bot.command()
-async def say(ctx, saytext : str):
-    print(saytext)
-    await ctx.send(saytext)
+async def say(ctx):
+    await ctx.send(content)
 
 
 @bot.command()
