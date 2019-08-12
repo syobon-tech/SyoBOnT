@@ -23,6 +23,7 @@ async def help(ctx, tohelp='all'):
         await ctx.send(embed=embed)
     if tohelp == 'embed':
         embed = discord.Embed(title='使用方法 : `s!embed <タイトル> <説明>', description='埋め込みを作成できます。現在はタイトルと説明のみに対応していますが、後々その他の項目も追加できるようにする予定です。')
+        await ctx.send(embed=embed)
 
 @bot.command()
 async def say(ctx, first='使用方法 ： `s!say 文字列`', second='', third=''):
