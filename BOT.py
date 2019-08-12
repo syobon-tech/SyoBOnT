@@ -10,13 +10,13 @@ bot.remove_command('help')
 async def help(ctx, tohelp='all'):
     if tohelp == 'all':
         embed = discord.Embed(title='現在利用可能なコマンドは以下のとおりです。', description='', color=0x3daee9)
-        embed.add_field(name='s!say', value='任意のテキストを送信します。現在、空白は二個まで対応しています。', inline=False)
+        embed.add_field(name='s!say', value='任意のテキストを送信します。', inline=False)
         embed.add_field(name='s!check', value='このBOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
         embed.add_field(name='s!embed', value='埋め込みを作ります。詳しくは`s!help embed`をご覧ください。', inline=False)
         embed.add_field(name='s!help', value='この一覧を表示します。', inline=False)
         await ctx.send(embed=embed)
     if tohelp == 'say':
-        embed = discord.Embed(title='使用方法 ： `s!say <文字列>`', description='任意のテキストを送信します。現在、空白は二個まで対応しています。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 ： `s!say <文字列>`', description='任意のテキストを送信します。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'check':
         embed = discord.Embed(title='使用方法 : `s!check`', description='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', color=0x3daee9)
