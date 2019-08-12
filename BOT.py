@@ -5,7 +5,7 @@ bot = commands.Bot(command_prefix='s!')
 
 # コマンド
 @bot.command()
-async def say(ctx):
+async def say(ctx, content='メンテナンス中'):
     await ctx.send(content)
 
 
