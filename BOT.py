@@ -11,23 +11,32 @@ async def help(ctx, tohelp='all'):
     if tohelp == 'all':
         embed = discord.Embed(title='現在利用可能なコマンドは以下のとおりです。', description='', color=0x3daee9)
         embed.add_field(name='s!say', value='任意のテキストを送信します。現在、空白は二個まで対応しています。', inline=False)
-        embed.add_field(name='s!check', value='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
+        embed.add_field(name='s!check', value='このBOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
+        embed.add_field(name='s!embed', value='埋め込みを作ります。詳しくは`s!help embed`をご覧ください。', inline=False)
         embed.add_field(name='s!help', value='この一覧を表示します。', inline=False)
         await ctx.send(embed=embed)
     if tohelp == 'say':
-        embed = discord.Embed(title='使用方法 ： `s!say 文字列`', description='任意のテキストを送信します。現在、空白は二個まで対応しています。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 ： `s!say <文字列>`', description='任意のテキストを送信します。現在、空白は二個まで対応しています。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'check':
         embed = discord.Embed(title='使用方法 : `s!check`', description='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', color=0x3daee9)
         await ctx.send(embed=embed)
+    if tohelp == 'embed':
+        embed = discord.embed(title='使用方法 : `s!embed <タイトル> <説明>', description='埋め込みを作成できます。現在はタイトルと説明のみに対応していますが、後々その他の項目も追加できるようにする予定です。')
 
 @bot.command()
-async def say(ctx, first='テキストを入れてください', second='', third=''):
+async def say(ctx, first='使用方法 ： `s!say 文字列`', second='', third=''):
     await ctx.send(first + ' ' + second + ' ' + third)
 
 @bot.command()
 async def check(ctx):
     await ctx.send('稼働中です')
+
+@bot.command()
+async def embed(ctx, title='', description=''):
+    embed = discord.embed(title=title, description=description)
+    await ctx.send(embed=embed)
+
 
 # Botの起動とDiscordサーバーへの接続
 bot.run('NjEwMzU3OTA3OTAwNDY1MTky.XVEJKg.ksWbKRLkGD3ucm41LZf5B05QznI')
