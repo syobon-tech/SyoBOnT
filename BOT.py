@@ -9,7 +9,7 @@ bot.remove_command('help')
 @bot.command()
 async def help(ctx, tohelp='all'):
     if tohelp == 'all':
-        embed = discord.Embed(title='SyoBOnT', description='現在利用可能なコマンドは以下のとおりです。:', color=0x3daee9)
+        embed = discord.Embed(title='現在利用可能なコマンドは以下のとおりです。', description='', color=0x3daee9)
         embed.add_field(name='s!say', value='任意のテキストを送信します。現在、空白は二個まで対応しています。', inline=False)
         embed.add_field(name='s!check', value='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
         embed.add_field(name='s!help', value='この一覧を表示します。', inline=False)
