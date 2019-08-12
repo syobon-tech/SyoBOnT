@@ -5,7 +5,7 @@ bot = commands.Bot(command_prefix='s!')
 
 # コマンド
 @bot.command()
-async def help(ctx, tohelp='all'):
+async def syobon_help(ctx, tohelp='all'):
     if tohelp == 'all':
         await ctx.send('現在使用できるコマンドは以下のとおりです。\r```\rsay   任意のテキストを送信します。現在空白は2つまで対応しています。\rcheck BOTの稼働を確認します。他のコマンドが使えないときにお試しください。\r```')
     if tohelp == 'say':
