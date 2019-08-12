@@ -19,6 +19,7 @@ async def help(ctx, tohelp='all'):
         embed.add_field(name='s!check', value='このBOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
         embed.add_field(name='s!embed', value='埋め込みを作ります。詳しくは`s!help embed`をご覧ください。', inline=False)
         embed.add_field(name='s!latestupdate', value='BOTが最後に更新された時間を表示します。', inline=False)
+        embed.add_field(name='s!dm', value='BOTがあなたにDMしてきます。', inline=False)
         embed.add_field(name='s!help', value='この一覧を表示します。', inline=False)
         await ctx.send(embed=embed)
     if tohelp == 'say':
@@ -32,6 +33,9 @@ async def help(ctx, tohelp='all'):
         await ctx.send(embed=embed)
     if tohelp == 'latestupdate':
         embed = discord.Embed(title='使用方法 : `s!latestupdate`', description='BOTが最後に更新された時間を表示します。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'dm':
+        embed = discord.Embed(title='使用方法 : `s!dm <文字列>`', description='BOTがあなたにDMしてきます。', color=0x3daee9)
         await ctx.send(embed=embed)
 
 @bot.command()
@@ -51,6 +55,9 @@ async def embed(ctx, title='', description=''):
 async def latestupdate(ctx):
     await ctx.send(update)
 
+@bot.command()
+async def dm(ctx, *, message):
+    await ctx.message.author.send(message)
 
 # Botの起動とDiscordサーバーへの接続
 bot.run('NjEwMzU3OTA3OTAwNDY1MTky.XVEJKg.ksWbKRLkGD3ucm41LZf5B05QznI')
