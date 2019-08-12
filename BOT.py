@@ -5,9 +5,8 @@ bot = commands.Bot(command_prefix='s!')
 
 # コマンド
 @bot.command()
-async def say(ctx, content='メンテナンス中'):
-    await ctx.send(content)
-
+async def say(ctx, first='テキストを入れてください', second='', third=''):
+    await ctx.send(first + second + third)
 
 @bot.command()
 async def check(ctx):
