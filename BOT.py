@@ -22,7 +22,7 @@ async def help(ctx, tohelp='all'):
         embed = discord.Embed(title='使用方法 : `s!check`', description='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'embed':
-        embed = discord.embed(title='使用方法 : `s!embed <タイトル> <説明>', description='埋め込みを作成できます。現在はタイトルと説明のみに対応していますが、後々その他の項目も追加できるようにする予定です。')
+        embed = discord.Embed(title='使用方法 : `s!embed <タイトル> <説明>', description='埋め込みを作成できます。現在はタイトルと説明のみに対応していますが、後々その他の項目も追加できるようにする予定です。')
 
 @bot.command()
 async def say(ctx, first='使用方法 ： `s!say 文字列`', second='', third=''):
@@ -34,7 +34,7 @@ async def check(ctx):
 
 @bot.command()
 async def embed(ctx, title='', description=''):
-    embed = discord.embed(title=title, description=description)
+    embed = discord.Embed(title=title, description=description)
     await ctx.send(embed=embed)
 
 
