@@ -56,7 +56,9 @@ async def latestupdate(ctx):
     await ctx.send(update)
 
 @bot.command()
-async def dm(ctx, *, message):
+async def dm(ctx, *, message=''):
+    if message == '':
+        await ctx.send('送信する文字列を指定してください。')
     await ctx.message.author.send(message)
 
 # Botの起動とDiscordサーバーへの接続
