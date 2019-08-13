@@ -62,4 +62,4 @@ async def dm(ctx, *, message=''):
     await ctx.message.author.send(message)
 
 # Botの起動とDiscordサーバーへの接続
-bot.run('NjEwMzU3OTA3OTAwNDY1MTky.XVEJKg.ksWbKRLkGD3ucm41LZf5B05QznI')
+bot.run('NjEwMzU3OTA3OTAwNDY1MTky.XVJSAw.1AgNGtcHO1coRk8IxpjFIfBnTSE')
