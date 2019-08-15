@@ -20,6 +20,7 @@ async def help(ctx, tohelp='all'):
         embed.add_field(name='s!embed', value='埋め込みを作ります。詳しくは`s!help embed`をご覧ください。', inline=False)
         embed.add_field(name='s!latestupdate', value='BOTが最後に更新された時間を表示します。', inline=False)
         embed.add_field(name='s!dm', value='BOTがあなたにDMしてきます。', inline=False)
+        embed.add_field(name='s!calc', value='式を計算します。', inline=False)
         embed.add_field(name='s!help', value='この一覧を表示します。', inline=False)
         await ctx.send(embed=embed)
     if tohelp == 'say':
@@ -36,6 +37,9 @@ async def help(ctx, tohelp='all'):
         await ctx.send(embed=embed)
     if tohelp == 'dm':
         embed = discord.Embed(title='使用方法 : `s!dm <文字列>`', description='BOTがあなたにDMしてきます。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'calc':
+        embed = discord.Embed(title='使用方法 : `s!calc <数式>`', description='式を計算します。', color=0x3daee9)
         await ctx.send(embed=embed)
 
 @bot.command()
@@ -60,6 +64,10 @@ async def dm(ctx, *, message=''):
     if message == '':
         await ctx.send('送信する文字列を指定してください。')
     await ctx.message.author.send(message)
+
+@bot.command()
+async def calc(ctx, *, formula):
+    await ctx.send(eval(formula))
 
 # Botの起動とDiscordサーバーへの接続
 bot.run('NjEwMzU3OTA3OTAwNDY1MTky.XVJSAw.1AgNGtcHO1coRk8IxpjFIfBnTSE')
