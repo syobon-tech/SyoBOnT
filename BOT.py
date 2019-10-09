@@ -2,7 +2,6 @@ import io
 import sys
 import subprocess
 import discord
-import numpy as np
 from discord.ext import commands
 import datetime
 import time
