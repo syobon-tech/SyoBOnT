@@ -57,7 +57,7 @@ async def help(ctx, tohelp='all'):
         embed.add_field(name='!!help', value='この一覧を表示します。', inline=False)
         await ctx.send(embed=embed)
     if tohelp == 'say':
-        embed = discord.Embed(title='使用方法 ： `!!say (delete) <文字列>`', description='BOTに任意の文字列を送信させることができます。\n文字列の前にdeleteを入れることにより、本当にBOTが話しているように見せることもできます。' color=0x3daee9)
+        embed = discord.Embed(title='使用方法 ： `!!say (delete) <文字列>`', description='BOTに任意の文字列を送信させることができます。\n文字列の前にdeleteを入れることにより、本当にBOTが話しているように見せることもできます。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'check':
         embed = discord.Embed(
