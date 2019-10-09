@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 import datetime
 import time
+import asyncio
 
 # 設定
 bot = commands.Bot(command_prefix='!!')
