@@ -13,8 +13,7 @@ bot.remove_command('help')
 # 自動
 @bot.listen()
 async def on_connect():
-    channel = discord.TextChannel
-    channel.id = 610463906896412685
+    channel = bot.get_channel('610463906896412685')
     await channel.send("BOTが更新され(もしくは復活し)ました")
 
 @bot.listen()
