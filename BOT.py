@@ -12,11 +12,6 @@ bot.remove_command('help')
 
 # 自動
 @bot.listen()
-async def on_connect():
-    await commands.TextChannelConverter.convert(ctx, 610463906896412685)
-    await ctx.send('BOTが更新され(もしくは復活し)ました')
-
-@bot.listen()
 async def on_member_join(member):
     channel = member.guild.system_channel
     if channel is not None:
@@ -171,11 +166,22 @@ async def python(ctx, *, toexe='print("コマンドを入力してください")
 
 
 @bot.command()
-async def mute(ctx, user):
-    muted = discord.abc.Snowflake
-    muted.id = 500283244613468175
-    user = ctx.message.mentions
-    await user[0].add_roles(muted)
+async def mute(ctx, user, limit=0, reason=''):
+    isint = type(limit) is int
+    if isint == False:
+        await ctx.send("使い方が間違っています")
+    else:
+        muted = discord.abc.Snowflake
+        muted.id = 500283244613468175
+        user = ctx.message.mentions
+        if reason == '':
+            await user[0].add_roles(muted)
+        else:
+            await user[0].add_roles(muted, reason)
+        if limit != 0:
+            limit = limit * 60
+            await asyncio.sleep(limit)
+            await user[0].remove_roles(muted)
 
 
 @bot.command()
