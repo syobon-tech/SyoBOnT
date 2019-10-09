@@ -12,6 +12,12 @@ bot.remove_command('help')
 
 # 自動
 @bot.listen()
+async def on_connect():
+    channel = discord.channel
+    channel.id = 610463906896412685
+    await channel.send("BOTが更新され(もしくは復活し)ました")
+
+@bot.listen()
 async def on_member_join(member):
     channel = member.guild.system_channel
     if channel is not None:
@@ -32,7 +38,7 @@ async def on_member_remove(member):
             datetime.timezone(datetime.timedelta(hours=9))
         )
         LeftTime = dt_left.strftime('%Y年%m月%d日 %H:%M')
-        await channel.send('{0.name}さんがサーバーを抜けました。'.format(member))
+        await channel.send('{0.name}さんがサーバーを抜けました。\n - '.format(member) + LeftTime)
 
 # コマンド
 @bot.command()
