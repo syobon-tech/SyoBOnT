@@ -13,8 +13,8 @@ bot.remove_command('help')
 # 自動
 @bot.listen()
 async def on_connect():
-    channel = bot.get_channel(610463906896412685)
-    await channel.send('BOTが更新され(もしくは復活し)ました')
+    await commands.TextChannelConverter.convert(ctx, 610463906896412685)
+    await ctx.send('BOTが更新され(もしくは復活し)ました')
 
 @bot.listen()
 async def on_member_join(member):
