@@ -39,21 +39,15 @@ async def on_member_remove(member):
 @bot.command()
 async def help(ctx, tohelp='all'):
     if tohelp == 'all':
-        embed = discord.Embed(title='現在利用可能なコマンドは以下のとおりです。',
-                              description='', color=0x3daee9)
+        embed = discord.Embed(title='現在利用可能なコマンドは以下のとおりです。', description='', color=0x3daee9)
         embed.add_field(name='!!say', value='任意のテキストを送信します。', inline=False)
-        embed.add_field(
-            name='!!embed', value='埋め込みを作ります。詳しくは`s!help embed`をご覧ください。', inline=False)
+        embed.add_field(name='!!embed', value='埋め込みを作ります。詳しくは`s!help embed`をご覧ください。', inline=False)
         embed.add_field(name='!!dm', value='BOTがあなたにDMしてきます。', inline=False)
-        embed.add_field(
-            name='!!calc', value='BOTに計算させることができます。Pythonの標準機能を使用するため、高度なことはできません。', inline=False)
-        embed.add_field(name='!!python',
-                        value='Pythonのコマンドを実行し、実行結果を返します。', inline=False)
-        embed.add_field(
-            name='!!check', value='このBOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
-        embed.add_field(name='!!mute', value='ユーザーをMutedにします。', inline=False)
-        embed.add_field(name='!!unmute',
-                        value='ユーザーのMutedを解除します。', inline=False)
+        embed.add_field(name='!!calc', value='BOTに計算させることができます。Pythonの標準機能を使用するため、高度なことはできません。', inline=False)
+        embed.add_field(name='!!python', value='Pythonのコマンドを実行し、実行結果を返します。', inline=False)
+        embed.add_field(name='!!check', value='このBOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
+        #embed.add_field(name='!!mute', value='ユーザーをMutedにします。', inline=False)
+        #embed.add_field(name='!!unmute', value='ユーザーのMutedを解除します。', inline=False)
         embed.add_field(name='!!help', value='この一覧を表示します。', inline=False)
         await ctx.send(embed=embed)
     if tohelp == 'say':
@@ -79,14 +73,14 @@ async def help(ctx, tohelp='all'):
         embed = discord.Embed(title='使用方法 ： `!!python <コマンド>',
                               description='Pythonのコマンドを実行し、実行結果を返します。', color=0x3daee9)
         await ctx.send(embed=embed)
-    if tohelp == 'mute':
-        embed = discord.Embed(title='使用方法 ： `!!mute <ユーザー>',
-                              description='ユーザーをMutedにします。', color=0x3daee9)
-        await ctx.send(embed=embed)
-    if tohelp == 'python':
-        embed = discord.Embed(title='使用方法 ： `!!unmute <ユーザー>',
-                              description='ユーザーのMutedを解除します。', color=0x3daee9)
-        await ctx.send(embed=embed)
+    #if tohelp == 'mute':
+    #    embed = discord.Embed(title='使用方法 ： `!!mute <ユーザー>',
+    #                          description='ユーザーをMutedにします。', color=0x3daee9)
+    #    await ctx.send(embed=embed)
+    #if tohelp == 'python':
+    #    embed = discord.Embed(title='使用方法 ： `!!unmute <ユーザー>',
+    #                          description='ユーザーのMutedを解除します。', color=0x3daee9)
+    #    await ctx.send(embed=embed)
 
 
 @bot.command()
@@ -165,7 +159,7 @@ async def python(ctx, *, toexe='print("コマンドを入力してください")
         result = '```\n' + result + '\n```'
         await ctx.send(result)
 
-
+'''
 @bot.command()
 async def mute(ctx, user, limit=0, reason=''):
     isint = type(limit) is int
@@ -191,6 +185,7 @@ async def unmute(ctx):
     muted.id = 500283244613468175
     user = ctx.message.mentions
     await user[0].remove_roles(muted)
+'''
 
 # Botの起動とDiscordサーバーへの接続
 bot.run('NjEwMzU3OTA3OTAwNDY1MTky.XZ1_ew.shpOyVFnjChZnTV1cSzdbh14oJU')
