@@ -10,6 +10,7 @@ import asyncio
 # 設定
 bot = commands.Bot(command_prefix='!!')
 bot.remove_command('help')
+loop = 0
 
 # 自動
 @bot.listen()
@@ -115,6 +116,19 @@ async def dm(ctx, *, message=''):
 
 @bot.command()
 async def calc(ctx, *, formula):
+    result = eval(formula)
+    result = str(result)
+    if len(result) >= 2000:
+        start = 0
+        end = 2000
+        finish = len(result)
+        while loop == 0:
+            if end >= finish:
+                await ctx.send(result[start:])
+                break
+            await ctx.send(result[start:end])
+            start = end
+            end += 2000
     await ctx.send(eval(formula))
 
 
