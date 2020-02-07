@@ -1,6 +1,7 @@
 import io
 import sys
 import subprocess
+import math
 import discord
 from discord.ext import commands
 import datetime
@@ -15,26 +16,27 @@ loop = 0
 # 自動
 @bot.listen()
 async def on_member_join(member):
-    channel = member.guild.system_channel
-    if channel is not None:
-        dt_join = datetime.datetime.now(
-            datetime.timezone(datetime.timedelta(hours=9))
-        )
-        embed = discord.Embed(title='ようこそ！', description='{0.mention}さん、とある宇宙の超雑談鯖へようこそ！\r「ルール関係」カテゴリにあるチャンネルはよく読んでおくことを推奨します。\r<#601046942092623924>には特に重要なことが書いてありますので、ご一読ください。'.format(
-            member), timestamp=dt_join, color=0x3daee9)
-        embed.set_thumbnail(url='https://i.imgur.com/Q8RRC0c.png')
-        await channel.send(embed=embed)
+    if member.guild.id == 486487795293093888:
+        channel = member.guild.system_channel
+        if channel is not None:
+            dt_join = datetime.datetime.now(
+                datetime.timezone(datetime.timedelta(hours=9))
+            )
+            embed = discord.Embed(title='ようこそ！', description='{0.mention}さん、とある宇宙の超雑談鯖へようこそ！\r「ルール関係」カテゴリにあるチャンネルはよく読んでおくことを推奨します。\r<#601046942092623924>には特に重要なことが書いてありますので、ご一読ください。'.format(member), timestamp=dt_join, color=0x3daee9)
+            embed.set_thumbnail(url='https://i.imgur.com/Q8RRC0c.png')
+            await channel.send(embed=embed)
 
 
 @bot.listen()
 async def on_member_remove(member):
-    channel = member.guild.system_channel
-    if channel is not None:
-        dt_left = datetime.datetime.now(
-            datetime.timezone(datetime.timedelta(hours=9))
-        )
-        LeftTime = dt_left.strftime('%Y年%m月%d日 %H:%M')
-        await channel.send('{0.name}さんがサーバーを抜けました。\n - '.format(member) + LeftTime)
+    if member.guild.id == 486487795293093888:
+        channel = member.guild.system_channel
+        if channel is not None:
+            dt_left = datetime.datetime.now(
+                datetime.timezone(datetime.timedelta(hours=9))
+            )
+            LeftTime = dt_left.strftime('%Y年%m月%d日 %H:%M')
+            await channel.send('{0.name}さんがサーバーを抜けました。\n - '.format(member) + LeftTime)
 
 # コマンド
 @bot.command()
@@ -47,41 +49,38 @@ async def help(ctx, tohelp='all'):
         embed.add_field(name='!!calc', value='BOTに計算させることができます。Pythonの標準機能を使用するため、高度なことはできません。', inline=False)
         embed.add_field(name='!!python', value='Pythonのコマンドを実行し、実行結果を返します。', inline=False)
         embed.add_field(name='!!check', value='このBOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
-        # embed.add_field(name='!!mute', value='ユーザーをMutedにします。', inline=False)
-        # embed.add_field(name='!!unmute', value='ユーザーのMutedを解除します。', inline=False)
+        embed.add_field(name='!!poll', value='投票を行えます。', inline=False)
+        embed.add_field(name='!!mute', value='ユーザーをMutedにします。', inline=False)
+        embed.add_field(name='!!unmute', value='ユーザーのMutedを解除します。', inline=False)
         embed.add_field(name='!!help', value='この一覧を表示します。', inline=False)
         await ctx.send(embed=embed)
     if tohelp == 'say':
         embed = discord.Embed(title='使用方法 ： `!!say (delete) <文字列>`', description='BOTに任意の文字列を送信させることができます。\n文字列の前にdeleteを入れることにより、本当にBOTが話しているように見せることもできます。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'check':
-        embed = discord.Embed(
-            title='使用方法 : `s!check`', description='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 : `!!check`', description='BOTの稼働を確認します。他のコマンドが使えないときにお試しください。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'embed':
-        embed = discord.Embed(title='使用方法 : `s!embed <タイトル> <説明>`',
-                              description='埋め込みを作成できます。現在はタイトルと説明のみに対応していますが、後々その他の項目も追加できるようにする予定です。\rタイトルや説明に空白を入れたい場合は、`"`で挟んでください。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 : `!!embed <タイトル> <説明>`', description='埋め込みを作成できます。現在はタイトルと説明のみに対応していますが、後々その他の項目も追加できるようにする予定です。\rタイトルや説明に空白を入れたい場合は、`"`で挟んでください。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'dm':
-        embed = discord.Embed(title='使用方法 : `s!dm <文字列>`',
-                              description='BOTがあなたにDMしてきます。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 : `!!dm <文字列>`', description='BOTがあなたにDMしてきます。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'calc':
-        embed = discord.Embed(title='使用方法 ： `!!calc <式>`',
-                              description='BOTに計算させることができます。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 ： `!!calc <式>`', description='BOTに計算させることができます。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'python':
-        embed = discord.Embed(title='使用方法 ： `!!python <コマンド>',
-                              description='Pythonのコマンドを実行し、実行結果を返します。', color=0x3daee9)
+        embed = discord.Embed(title='使用方法 ： `!!python <コマンド>', description='Pythonのコマンドを実行し、実行結果を返します。', color=0x3daee9)
         await ctx.send(embed=embed)
-    #if tohelp == 'mute':
-    #    embed = discord.Embed(title='使用方法 ： `!!mute <ユーザー>',
-    #                          description='ユーザーをMutedにします。', color=0x3daee9)
-    #    await ctx.send(embed=embed)
-    #if tohelp == 'python':
-    #    embed = discord.Embed(title='使用方法 ： `!!unmute <ユーザー>',
-    #                          description='ユーザーのMutedを解除します。', color=0x3daee9)
-    #    await ctx.send(embed=embed)
+    if tohelp == 'poll':
+        embed = discord.Embed(title='使用方法 ： `!!poll タイトル|選択肢1|選択肢2|選択肢3|...`', description='投票を行えます。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'mute':
+        embed = discord.Embed(title='使用方法 ： `!!mute <ユーザー>', description='ユーザーをMutedにします。管理者にしか使用できません。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'unmute':
+        embed = discord.Embed(title='使用方法 ： `!!unmute <ユーザー>', description='ユーザーのMutedを解除します。管理者にしか使用できません。', color=0x3daee9)
+        await ctx.send(embed=embed)
 
 
 @bot.command()
@@ -173,32 +172,126 @@ async def python(ctx, *, toexe='print("コマンドを入力してください")
         result = '```\n' + result + '\n```'
         await ctx.send(result)
 
-'''
 @bot.command()
-async def mute(ctx, user, limit=0, reason=''):
-    isint = type(limit) is int
-    if isint == False:
-        await ctx.send("使い方が間違っています")
+async def poll(ctx, *, poll):
+    await discord.ext.commands.bot.discord.message.Message.delete(ctx.message)
+    poll = poll.split('|')
+    if len(poll) <= 2:
+        error = await ctx.send('構文が間違っているか、選択肢が少なすぎます。')
+        await asyncio.sleep(5)
+        await discord.ext.commands.bot.discord.message.Message.delete(error)
     else:
-        muted = discord.abc.Snowflake
-        muted.id = 500283244613468175
-        user = ctx.message.mentions
-        if reason == '':
-            await user[0].add_roles(muted)
-        else:
-            await user[0].add_roles(muted, reason)
-        if limit != 0:
-            limit = limit * 60
-            await asyncio.sleep(limit)
-            await user[0].remove_roles(muted)
+        out = ':regional_indicator_q: ' + poll[0]
+        loop = len(poll) - 1
+        loop = loop / 10
+        loop = math.ceil(loop)
+        for i in range(loop):
+            num = i * 10
+            if len(poll) >= num + 2:
+                if i >= 1:
+                    out = ':one: ' + poll[num + 1]
+                else:
+                    out += '\n\n:one: ' + poll[num + 1]
+            if len(poll) >= num + 3:
+                out += '\n:two: ' + poll[num + 2]
+            if len(poll) >= num + 4:
+                out += '\n:three: ' + poll[num + 3]
+            if len(poll) >= num + 5:
+                out += '\n:four: ' + poll[num + 4]
+            if len(poll) >= num + 6:
+                out += '\n:five: ' + poll[num + 5]
+            if len(poll) >= num + 7:
+                out += '\n:six: ' + poll[num + 6]
+            if len(poll) >= num + 8:
+                out += '\n:seven: ' + poll[num + 7]
+            if len(poll) >= num + 9:
+                out += '\n:eight: ' + poll[num + 8]
+            if len(poll) >= num + 10:
+                out += '\n:nine: ' + poll[num + 9]
+            if len(poll) >= num + 11:
+                out += '\n:keycap_ten: ' + poll[num + 10]
+            msg = await ctx.send(out)
+            if len(poll) >= num + 2:
+                await msg.add_reaction('1️⃣')
+            if len(poll) >= num + 3:
+                await msg.add_reaction('2️⃣')
+            if len(poll) >= num + 4:
+                await msg.add_reaction('3️⃣')
+            if len(poll) >= num + 5:
+                await msg.add_reaction('4️⃣')
+            if len(poll) >= num + 6:
+                await msg.add_reaction('5️⃣')
+            if len(poll) >= num + 7:
+                await msg.add_reaction('6️⃣')
+            if len(poll) >= num + 8:
+                await msg.add_reaction('7️⃣')
+            if len(poll) >= num + 9:
+                await msg.add_reaction('8️⃣')
+            if len(poll) >= num + 10:
+                await msg.add_reaction('9️⃣')
+            if len(poll) >= num + 11:
+                await msg.add_reaction('🔟')
 
+@bot.command()
+async def mute(ctx, user, limit=0):
+    role = ctx.guild.get_role(615091084372213760)
+    if ctx.author in role.members:
+        channel = ctx.guild.get_channel(501317011490734080)
+        isint = type(limit) is int
+        if isint == False:
+            await ctx.send("使い方が間違っています")
+        else:
+            muted = ctx.guild.get_role(500283244613468175)
+            user = ctx.message.mentions
+            await user[0].add_roles(muted)
+            if limit == 0:
+                await channel.send(user[0].name + 'さんがMuteされました')
+            else:
+                await channel.send(user[0].name + 'さんが' + str(limit) + '分間Muteされました')
+                limit = limit * 60
+                await asyncio.sleep(limit)
+                await user[0].remove_roles(muted)
+                await channel.send(user[0].name + 'さんのMute期間が終わりました')
 
 @bot.command()
 async def unmute(ctx):
-    muted = discord.abc.Snowflake
-    muted.id = 500283244613468175
-    user = ctx.message.mentions
-    await user[0].remove_roles(muted)
+    role = ctx.guild.get_role(615091084372213760)
+    if ctx.author in role.members:
+        channel = ctx.guild.get_channel(501317011490734080)
+        muted = ctx.guild.get_role(500283244613468175)
+        user = ctx.message.mentions
+        await user[0].remove_roles(muted)
+        await channel.send(user[0].name + 'さんのMuteが解除されました')
+
+# 2021まで封印
+'''
+@bot.command()
+async def CountdownStart(ctx):
+    now = datetime.datetime.now(
+            datetime.timezone(datetime.timedelta(hours=9))
+    )
+    next_year_int=now.year + 1
+    next_year = datetime.datetime(year=next_year_int, month=1, day=1, hour=0, minute=0, second=0)
+    year = now.year
+    while year >= 0:
+        now = datetime.datetime.now(
+            datetime.timezone(datetime.timedelta(hours=9))
+        )
+        year = now.year
+        if year == next_year_int:
+            await ctx.send('@everyone\nHappy New Year !!!')
+            break
+        now = datetime.datetime(year=now.year, month=now.month, day=now.day, hour=now.hour, minute=now.minute, second=now.second)
+        sabun = next_year - now
+        sabun = (sabun.days * 86400) + sabun.seconds
+        if sabun <= 60:
+            await ctx.send(str(next_year_int) + '年まであと' + str(sabun) + '秒')
+            await asyncio.sleep(1)
+        else:
+            if now.second == 0:
+                sabun = sabun / 60
+                await ctx.send(str(next_year_int) + '年まであと' + str(int(sabun)) + '分')
+                await asyncio.sleep(5)
 '''
 
 # Botの起動とDiscordサーバーへの接続
