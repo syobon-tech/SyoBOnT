@@ -50,27 +50,28 @@ async def on_raw_reaction_add(ctx):
         if ctx.guild_id == 486487795293093888:
             guild = bot.get_guild(486487795293093888)
             user = guild.get_member(ctx.user_id)
-            if ctx.emoji.name == "🎮":
+            if ctx.emoji.name == '🎮':
                 role = guild.get_role(601947434561699872)
-            elif ctx.emoji.name == "grass_block":
+            elif ctx.emoji.name == 'grass_block':
                 role = guild.get_role(506793691978137601)
-            elif ctx.emoji.name == "🎵":
+            elif ctx.emoji.name == '🎵':
                 role = guild.get_role(499891499761270826)
-            elif ctx.emoji.name == "🀄":
+            elif ctx.emoji.name == '🀄':
                 role = guild.get_role(638367989565095946)
-            elif ctx.emoji.name == "🔢":
+            elif ctx.emoji.name == '🔢':
                 role = guild.get_role(601729109281996800)
-            elif ctx.emoji.name == "🔡":
+            elif ctx.emoji.name == '🔡':
                 role = guild.get_role(602807063550099457)
-            elif ctx.emoji.name == "⏪":
+            elif ctx.emoji.name == '⏪':
                 role = guild.get_role(601384237530087424)
-            elif ctx.emoji.name == "🔔":
+            elif ctx.emoji.name == '🔔':
                 role = guild.get_role(605187648927039519)
-            elif ctx.emoji.name == "🎧":
+            elif ctx.emoji.name == '🎧':
                 role = guild.get_role(497004207782494218)
-            elif ctx.emoji.name == "🔕":
+            elif ctx.emoji.name == '🔕':
                 role = guild.get_role(603965872456859651)
             await user.add_roles(role)
+            await user.send('**' + role.name + '**役職を付与しました。')
 
 @bot.listen()
 async def on_raw_reaction_remove(ctx):
@@ -78,27 +79,28 @@ async def on_raw_reaction_remove(ctx):
         if ctx.guild_id == 486487795293093888:
             guild = bot.get_guild(486487795293093888)
             user = guild.get_member(ctx.user_id)
-            if ctx.emoji.name == "🎮":
+            if ctx.emoji.name == '🎮':
                 role = guild.get_role(601947434561699872)
-            elif ctx.emoji.name == "grass_block":
+            elif ctx.emoji.name == 'grass_block':
                 role = guild.get_role(506793691978137601)
-            elif ctx.emoji.name == "🎵":
+            elif ctx.emoji.name == '🎵':
                 role = guild.get_role(499891499761270826)
-            elif ctx.emoji.name == "🀄":
+            elif ctx.emoji.name == '🀄':
                 role = guild.get_role(638367989565095946)
-            elif ctx.emoji.name == "🔢":
+            elif ctx.emoji.name == '🔢':
                 role = guild.get_role(601729109281996800)
-            elif ctx.emoji.name == "🔡":
+            elif ctx.emoji.name == '🔡':
                 role = guild.get_role(602807063550099457)
-            elif ctx.emoji.name == "⏪":
+            elif ctx.emoji.name == '⏪':
                 role = guild.get_role(601384237530087424)
-            elif ctx.emoji.name == "🔔":
+            elif ctx.emoji.name == '🔔':
                 role = guild.get_role(605187648927039519)
-            elif ctx.emoji.name == "🎧":
+            elif ctx.emoji.name == '🎧':
                 role = guild.get_role(497004207782494218)
-            elif ctx.emoji.name == "🔕":
+            elif ctx.emoji.name == '🔕':
                 role = guild.get_role(603965872456859651)
             await user.remove_roles(role)
+            await user.send('**' + role.name + '**役職を削除しました。')
 
 @bot.listen()
 async def on_resumed():
