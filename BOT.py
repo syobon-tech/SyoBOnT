@@ -12,6 +12,9 @@ import asyncio
 bot = commands.Bot(command_prefix='!!')
 bot.remove_command('help')
 loop = 0
+startup = datetime.datetime.now(
+    datetime.timezone(datetime.timedelta(hours=9))
+    )
 
 # 自動
 @bot.listen()
@@ -37,6 +40,16 @@ async def on_member_remove(member):
             )
             LeftTime = dt_left.strftime('%Y年%m月%d日 %H:%M')
             await channel.send('{0.name}さんがサーバーを抜けました。\n - '.format(member) + LeftTime)
+
+@bot.listen()
+async def on_resumed():
+    now = datetime.datetime.now(
+        datetime.timezone(datetime.timedelta(hours=9))
+        )
+    workdays = now - startup
+    if workdays.days >= 20:
+        user = bot.get_user(371837989619499018)
+        await user.send('BOT稼働から20日以上が経過しています。Renewしてください。')
 
 # コマンド
 @bot.command()
