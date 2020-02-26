@@ -29,6 +29,9 @@ async def on_member_join(member):
             embed.set_thumbnail(url='https://i.imgur.com/Q8RRC0c.png')
             await channel.send(embed=embed)
 
+            online = member.guild.get_role(682180183595417650)
+            await member.add_roles(online)
+
 
 @bot.listen()
 async def on_member_remove(member):
@@ -40,6 +43,62 @@ async def on_member_remove(member):
             )
             LeftTime = dt_left.strftime('%Y年%m月%d日 %H:%M')
             await channel.send('{0.name}さんがサーバーを抜けました。\n - '.format(member) + LeftTime)
+
+@bot.listen()
+async def on_raw_reaction_add(ctx):
+    if ctx.channel_id == 601396253301014580:
+        if ctx.guild_id == 486487795293093888:
+            guild = bot.get_guild(486487795293093888)
+            user = guild.get_user(ctx.user_id)
+            if ctx.emoji.name == "🎮":
+                role = guild.get_role(601947434561699872)
+            elif ctx.emoji.name == "grass_block":
+                role = guild.get_role(506793691978137601)
+            elif ctx.emoji.name == "🎵":
+                role = guild.get_role(499891499761270826)
+            elif ctx.emoji.name == "🀄":
+                role = guild.get_role(638367989565095946)
+            elif ctx.emoji.name == "🔢":
+                role = guild.get_role(601729109281996800)
+            elif ctx.emoji.name == "🔡":
+                role = guild.get_role(602807063550099457)
+            elif ctx.emoji.name == "⏪":
+                role = guild.get_role(601384237530087424)
+            elif ctx.emoji.name == "🔔":
+                role = guild.get_role(605187648927039519)
+            elif ctx.emoji.name == "🎧":
+                role = guild.get_role(497004207782494218)
+            elif ctx.emoji.name == "🔕":
+                role = guild.get_role(603965872456859651)
+            await user.add_roles(role)
+
+@bot.listen()
+async def on_raw_reaction_remove(ctx):
+    if ctx.channel_id == 601396253301014580:
+        if ctx.guild_id == 486487795293093888:
+            guild = bot.get_guild(486487795293093888)
+            user = guild.get_user(ctx.user_id)
+            if ctx.emoji.name == "🎮":
+                role = guild.get_role(601947434561699872)
+            elif ctx.emoji.name == "grass_block":
+                role = guild.get_role(506793691978137601)
+            elif ctx.emoji.name == "🎵":
+                role = guild.get_role(499891499761270826)
+            elif ctx.emoji.name == "🀄":
+                role = guild.get_role(638367989565095946)
+            elif ctx.emoji.name == "🔢":
+                role = guild.get_role(601729109281996800)
+            elif ctx.emoji.name == "🔡":
+                role = guild.get_role(602807063550099457)
+            elif ctx.emoji.name == "⏪":
+                role = guild.get_role(601384237530087424)
+            elif ctx.emoji.name == "🔔":
+                role = guild.get_role(605187648927039519)
+            elif ctx.emoji.name == "🎧":
+                role = guild.get_role(497004207782494218)
+            elif ctx.emoji.name == "🔕":
+                role = guild.get_role(603965872456859651)
+            await user.remove_roles(role)
 
 @bot.listen()
 async def on_resumed():
