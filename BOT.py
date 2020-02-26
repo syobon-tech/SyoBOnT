@@ -71,7 +71,7 @@ async def on_raw_reaction_add(ctx):
             elif ctx.emoji.name == '🔕':
                 role = guild.get_role(603965872456859651)
             await user.add_roles(role)
-            await user.send('**' + role.name + '**役職を付与しました。')
+            await user.send('`' + role.name + '`役職を付与しました。')
 
 @bot.listen()
 async def on_raw_reaction_remove(ctx):
@@ -100,7 +100,7 @@ async def on_raw_reaction_remove(ctx):
             elif ctx.emoji.name == '🔕':
                 role = guild.get_role(603965872456859651)
             await user.remove_roles(role)
-            await user.send('**' + role.name + '**役職を削除しました。')
+            await user.send('`' + role.name + '`役職を削除しました。')
 
 @bot.listen()
 async def on_resumed():
