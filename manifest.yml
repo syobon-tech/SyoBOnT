@@ -5,4 +5,5 @@ applications:
    command: python BOT.py
    buildpacks:
     - https://github.com/shunjikonishi/heroku-buildpack-ffmpeg
+    - python_buildpack
    path: .
