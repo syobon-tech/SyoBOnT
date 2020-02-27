@@ -4,6 +4,6 @@ applications:
    memory: 128M
    command: python BOT.py
    buildpacks:
-    - https://github.com/shunjikonishi/heroku-buildpack-ffmpeg
+    - https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
     - python_buildpack
    path: .
