@@ -337,6 +337,26 @@ async def unmute(ctx):
         await user[0].remove_roles(muted)
         await channel.send(user[0].name + 'さんのMuteが解除されました')
 
+@bot.command()
+async def join(ctx):
+    if not voice:
+        voice = await ctx.author.voice.channel.connect()
+
+@bot.command(aliases=['p'])
+async def play(ctx, url):
+    if not voice:
+        voice = await ctx.author.voice.channel.connect()
+    await ctx.send('URLを解析中...')
+    subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
+    source = discord.FFmpegPCMAudio('./temp.opus')
+    voice.play(source)
+    await ctx.sned('再生')
+
+@bot.command(aliases=['dis'])
+async def disconnect(ctx):
+    if voice:
+        voice.disconnect()
+
 # 2021まで封印
 '''
 @bot.command()

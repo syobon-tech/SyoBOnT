@@ -3,4 +3,5 @@ applications:
    random-route: true
    memory: 128M
    command: python BOT.py
+   buildpack: https://github.com/shunjikonishi/heroku-buildpack-ffmpeg
    path: .
