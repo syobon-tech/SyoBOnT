@@ -391,6 +391,8 @@ async def disconnect(ctx):
 @bot.command(aliases=['s'])
 async def skip(ctx):
     global voice_client
+    global waiting
+    global waiting_url
     if voice_client:
         voice_client.stop()
         await ctx.send('スキップ')
@@ -406,6 +408,8 @@ async def skip(ctx):
 
 @bot.command(aliases=['q'])
 async def queue(ctx):
+    global waiting
+    global waiting_url
     if waiting:
         await ctx.send(waiting_url)
     else:
