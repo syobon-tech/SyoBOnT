@@ -16,7 +16,6 @@ bot.remove_command('help')
 startup = datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=9))
     )
-waiting = False
 waiting_url = []
 
 # 自動
@@ -371,10 +370,7 @@ async def play(ctx, url):
         if os.path.isfile('./temp.opus'):
             subprocess.run(['rm', './temp.opus'])
     if os.path.isfile('./temp.opus'):
-        global waiting
         global waiting_url
-        if not waiting:
-            waiting = True
         waiting_url.append(url)
         autonext.start()
         await ctx.send('キューに追加しました。')
@@ -390,9 +386,9 @@ async def play(ctx, url):
 @bot.command(aliases=['dis'])
 async def disconnect(ctx):
     global voice_client
+    global waiting_url
     if voice_client:
         autonext.stop()
-        waiting = False
         waiting_url = []
         await voice_client.disconnect()
         await ctx.send('切断しました。')
@@ -400,14 +396,12 @@ async def disconnect(ctx):
 @bot.command(aliases=['s'])
 async def skip(ctx):
     global voice_client
-    global waiting
     global waiting_url
     if not voice_client == None:
         voice_client.stop()
         await ctx.send('スキップします。')
-        if waiting:
+        if len(waiting_url) != 0:
             if len(waiting_url) == 1:
-                waiting = False
                 autonext.stop()
             subprocess.run(['rm', './temp.opus'])
             await ctx.send('次の曲のURLを解析中...')
@@ -421,9 +415,8 @@ async def skip(ctx):
 
 @bot.command(aliases=['q'])
 async def queue(ctx):
-    global waiting
     global waiting_url
-    if waiting:
+    if len(waiting_url) != 0:
         await ctx.send('キュー：\n' + '\n'.join(waiting_url))
     else:
         await ctx.send('キューは空です。')
@@ -432,19 +425,16 @@ async def queue(ctx):
 async def autonext():
     global voice_client
     global waiting_url
-    if waiting:
-        print(voice_client.is_playing())
-        if not voice_client.is_playing():
-            subprocess.run(['rm', './temp.opus'])
-            subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
-            source = discord.FFmpegPCMAudio('./temp.opus')
-            voice_client.play(source)
-            if len(waiting_url) == 1:
-                waiting = False
-                waiting_url = []
-                autonext.stop()
-            else:
-                waiting_url.pop(0)
+    if not voice_client.is_playing():
+        subprocess.run(['rm', './temp.opus'])
+        subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
+        source = discord.FFmpegPCMAudio('./temp.opus')
+        voice_client.play(source)
+        if len(waiting_url) == 1:
+            waiting_url = []
+            autonext.stop()
+        else:
+            waiting_url.pop(0)
 
 # 2021まで封印
 '''
