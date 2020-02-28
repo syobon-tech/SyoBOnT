@@ -13,7 +13,6 @@ import asyncio
 # 設定
 bot = commands.Bot(command_prefix='!!')
 bot.remove_command('help')
-loop = 0
 startup = datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=9))
     )
@@ -201,6 +200,7 @@ async def calc(ctx, *, formula):
     result = eval(formula)
     result = str(result)
     if len(result) >= 2000:
+        loop = 0
         start = 0
         end = 2000
         finish = len(result)
