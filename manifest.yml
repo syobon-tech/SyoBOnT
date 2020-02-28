@@ -5,4 +5,4 @@ applications:
    command: python BOT.py
    path: .
    env:
-      PATH: $PATH':/app'
+      PATH: '/bin:/app'
