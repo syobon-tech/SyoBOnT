@@ -124,7 +124,7 @@ async def on_resumed():
 async def help(ctx, tohelp='all'):
     if tohelp == 'all':
         embed = discord.Embed(title='現在利用可能なコマンドは以下のとおりです。', description='', color=0x3daee9)
-        embed.add_field(name='基本コマンド：', value='' inline=False)
+        embed.add_field(name='基本コマンド：', value='', inline=False)
         embed.add_field(name='!!say', value='任意のテキストを送信します。', inline=False)
         embed.add_field(name='!!embed', value='埋め込みを作ります。詳しくは`s!help embed`をご覧ください。', inline=False)
         embed.add_field(name='!!dm', value='BOTがあなたにDMしてきます。', inline=False)
@@ -133,14 +133,14 @@ async def help(ctx, tohelp='all'):
         embed.add_field(name='!!check', value='このBOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
         embed.add_field(name='!!poll', value='投票を行えます。', inline=False)
 
-        embed.add_field(name='音楽コマンド：', value='' inline=False)
+        embed.add_field(name='音楽コマンド：', value='', inline=False)
         embed.add_field(name='!!join', value='音声チャンネルに入ります。',inline=False)
         embed.add_field(name='!!play', value='YouTube等の動画を再生します。現在はURLのみに対応しています。', inline=False)
         embed.add_field(name='!!skip', value='再生している動画をスキップします。', inline=False)
         embed.add_field(name='!!queue', value='キューを表示します。', inline=False)
         embed.add_field(name='!!disconnect', value='音声チャンネルから抜けます。', inline=False)
 
-        embed.add_field(name='管理者コマンド：', value='' inline=False)
+        embed.add_field(name='管理者コマンド：', value='', inline=False)
         embed.add_field(name='!!mute', value='ユーザーをMutedにします。', inline=False)
         embed.add_field(name='!!unmute', value='ユーザーのMutedを解除します。', inline=False)
         embed.add_field(name='!!help', value='この一覧を表示します。', inline=False)
