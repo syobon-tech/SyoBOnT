@@ -5,6 +5,7 @@ import subprocess
 import math
 import discord
 from discord.ext import commands
+from discord.ext import tasks
 import datetime
 import time
 import asyncio
@@ -390,10 +391,10 @@ async def skip(ctx):
         subprocess.run(['rm', './temp.opus'])
 
 @tasks.loop(seconds=3)
-async def loop():
+async def autonext():
     global voice_client
     global waiting
-    global next_url
+    global waiting_url
     if waiting:
         if not voice_client.is_playing():
             if len(waiting_url) == 1:
