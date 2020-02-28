@@ -347,9 +347,7 @@ async def unmute(ctx):
 @bot.command()
 async def join(ctx):
     global voice_client
-    try:
-        voice_client
-    except NameError:
+    if voice_client == None:
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
         await ctx.send('接続')
@@ -360,9 +358,7 @@ async def join(ctx):
 @bot.command(aliases=['p'])
 async def play(ctx, url):
     global voice_client
-    try:
-        voice_client
-    except NameError:
+    if voice_client == None:
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
         voice_client = ctx.message.guild.voice_client
@@ -383,18 +379,14 @@ async def play(ctx, url):
 @bot.command(aliases=['dis'])
 async def disconnect(ctx):
     global voice_client
-    try:
-        voice_client
-    except None:
+    if not voice_client == None:
         await voice_client.disconnect()
         await ctx.send('切断')
 
 @bot.command(aliases=['s'])
 async def skip(ctx):
     global voice_client
-    try:
-        voice_client
-    except None:
+    if not voice_client == None:
         voice_client.stop()
         subprocess.run(['rm', './temp.opus'])
 
