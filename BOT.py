@@ -179,7 +179,7 @@ async def say(ctx, *, message='使用方法 ： `!!say (delete) 文字列`'):
 
 @bot.command()
 async def check(ctx):
-    await ctx.send('稼働中です')
+    await ctx.send('稼働中です。')
 
 
 @bot.command()
@@ -215,14 +215,14 @@ async def calc(ctx, *, formula):
 
 
 @bot.command()
-async def python(ctx, *, toexe='print("コマンドを入力してください")'):
+async def python(ctx, *, toexe='print("コマンドを入力してください。")'):
     DoAlthoughOver2000 = toexe.startswith('over2000')
     if DoAlthoughOver2000 == True:
         toexe = toexe.split(None, 1)
         if len(toexe) >= 2:
             toexe = toexe[1]
         else:
-            toexe = 'print("コマンドを入力してください")'
+            toexe = 'print("コマンドを入力してください。")'
 
     with open("temp.py", "w") as f:
         print(toexe, file=f)
@@ -322,19 +322,19 @@ async def mute(ctx, user, limit=0):
         channel = ctx.guild.get_channel(501317011490734080)
         isint = type(limit) is int
         if isint == False:
-            await ctx.send("使い方が間違っています")
+            await ctx.send("使い方が間違っています。")
         else:
             muted = ctx.guild.get_role(500283244613468175)
             user = ctx.message.mentions
             await user[0].add_roles(muted)
             if limit == 0:
-                await channel.send(user[0].name + 'さんがMuteされました')
+                await channel.send(user[0].name + 'さんがMuteされました。')
             else:
-                await channel.send(user[0].name + 'さんが' + str(limit) + '分間Muteされました')
+                await channel.send(user[0].name + 'さんが' + str(limit) + '分間Muteされました。')
                 limit = limit * 60
                 await asyncio.sleep(limit)
                 await user[0].remove_roles(muted)
-                await channel.send(user[0].name + 'さんのMute期間が終わりました')
+                await channel.send(user[0].name + 'さんのMute期間が終わりました。')
 
 @bot.command()
 async def unmute(ctx):
@@ -344,7 +344,7 @@ async def unmute(ctx):
         muted = ctx.guild.get_role(500283244613468175)
         user = ctx.message.mentions
         await user[0].remove_roles(muted)
-        await channel.send(user[0].name + 'さんのMuteが解除されました')
+        await channel.send(user[0].name + 'さんのMuteが解除されました。')
 
 @bot.command()
 async def join(ctx):
@@ -354,7 +354,7 @@ async def join(ctx):
     except NameError:
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
-        await ctx.send('接続')
+        await ctx.send('接続しました。')
         voice_client = ctx.message.guild.voice_client
         if os.path.isfile('./temp.opus'):
             subprocess.run(['rm', './temp.opus'])
@@ -376,20 +376,22 @@ async def play(ctx, url):
         if not waiting:
             waiting = True
         waiting_url.append(url)
-        await ctx.send('キューに追加')
+        await ctx.send('キューに追加しました。')
     else:
         await ctx.send('URLを解析中...')
-        subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
+        result = subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
+        if result.returncode != 0:
+                await ctx.send('URLの解析に失敗しました。')
         source = discord.FFmpegPCMAudio('./temp.opus')
         voice_client.play(source)
-        await ctx.send('再生')
+        await ctx.send('再生開始しました。')
 
 @bot.command(aliases=['dis'])
 async def disconnect(ctx):
     global voice_client
     if voice_client:
         await voice_client.disconnect()
-        await ctx.send('切断')
+        await ctx.send('切断しました。')
 
 @bot.command(aliases=['s'])
 async def skip(ctx):
@@ -398,14 +400,18 @@ async def skip(ctx):
     global waiting_url
     if not voice_client == None:
         voice_client.stop()
-        await ctx.send('スキップ')
+        await ctx.send('スキップします。')
         if waiting:
             if len(waiting_url) == 1:
                 waiting = False
             subprocess.run(['rm', './temp.opus'])
-            subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
+            await ctx.send('次の曲のURLを解析中...')
+            result = subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
+            if result.returncode != 0:
+                await ctx.send('URLの解析に失敗しました。')
             source = discord.FFmpegPCMAudio('./temp.opus')
             voice_client.play(source)
+            await ctx.send('スキップしました。')
             waiting_url.pop(0)
 
 @bot.command(aliases=['q'])
@@ -413,9 +419,9 @@ async def queue(ctx):
     global waiting
     global waiting_url
     if waiting:
-        await ctx.send(waiting_url)
+        await ctx.send('キュー：\n' + '\n'.join(waiting_url))
     else:
-        await ctx.send('キューは空です')
+        await ctx.send('キューは空です。')
 
 @tasks.loop(seconds=3)
 async def autonext():
@@ -423,6 +429,7 @@ async def autonext():
     global waiting
     global waiting_url
     if waiting:
+        print(voice_client.is_playing())
         if not voice_client.is_playing():
             if len(waiting_url) == 1:
                 waiting = False
