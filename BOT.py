@@ -124,6 +124,7 @@ async def on_resumed():
 async def help(ctx, tohelp='all'):
     if tohelp == 'all':
         embed = discord.Embed(title='現在利用可能なコマンドは以下のとおりです。', description='', color=0x3daee9)
+        embed.add_field(name='基本コマンド：', value='' inline=False)
         embed.add_field(name='!!say', value='任意のテキストを送信します。', inline=False)
         embed.add_field(name='!!embed', value='埋め込みを作ります。詳しくは`s!help embed`をご覧ください。', inline=False)
         embed.add_field(name='!!dm', value='BOTがあなたにDMしてきます。', inline=False)
@@ -131,6 +132,15 @@ async def help(ctx, tohelp='all'):
         embed.add_field(name='!!python', value='Pythonのコマンドを実行し、実行結果を返します。', inline=False)
         embed.add_field(name='!!check', value='このBOTの稼働を確認します。他のコマンドが使えないときにお試しください。', inline=False)
         embed.add_field(name='!!poll', value='投票を行えます。', inline=False)
+
+        embed.add_field(name='音楽コマンド：', value='' inline=False)
+        embed.add_field(name='!!join', value='音声チャンネルに入ります。',inline=False)
+        embed.add_field(name='!!play', value='YouTube等の動画を再生します。現在はURLのみに対応しています。', inline=False)
+        embed.add_field(name='!!skip', value='再生している動画をスキップします。', inline=False)
+        embed.add_field(name='!!queue', value='キューを表示します。', inline=False)
+        embed.add_field(name='!!disconnect', value='音声チャンネルから抜けます。', inline=False)
+
+        embed.add_field(name='管理者コマンド：', value='' inline=False)
         embed.add_field(name='!!mute', value='ユーザーをMutedにします。', inline=False)
         embed.add_field(name='!!unmute', value='ユーザーのMutedを解除します。', inline=False)
         embed.add_field(name='!!help', value='この一覧を表示します。', inline=False)
@@ -155,6 +165,21 @@ async def help(ctx, tohelp='all'):
         await ctx.send(embed=embed)
     if tohelp == 'poll':
         embed = discord.Embed(title='使用方法 ： `!!poll タイトル|選択肢1|選択肢2|選択肢3|...`', description='投票を行えます。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'join':
+        embed = discord.Embed(title='使用方法 ： `!!join`', description='音声チャンネルに入ります。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'play' or 'p':
+        embed = discord.Embed(title='使用方法 ： `!!play <URL>`', description='音声チャンネル内で動画を再生します。`!!p <URL>`でもOKです。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'queue' or 'q':
+        embed = discord.Embed(title='使用方法 ： `!!queue`', description='動画再生のキューを表示します。`!!q`でもOKです。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'skip' or 's':
+        embed = discord.Embed(title='使用方法 ： `!!skip`', description='再生中の動画をスキップします。`!!s`でもOKです。', color=0x3daee9)
+        await ctx.send(embed=embed)
+    if tohelp == 'disconnect' or 'dis':
+        embed = discord.Embed(title='使用方法 ： `!!disconnect`', description='音声チャンネルから抜けます。`!!dis`でもOKです。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'mute':
         embed = discord.Embed(title='使用方法 ： `!!mute <ユーザー>', description='ユーザーをMutedにします。管理者にしか使用できません。', color=0x3daee9)
