@@ -1,4 +1,5 @@
 import io
+import os
 import sys
 import subprocess
 import math
@@ -15,6 +16,7 @@ loop = 0
 startup = datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=9))
     )
+waiting_url = []
 
 # 自動
 @bot.listen()
@@ -70,6 +72,8 @@ async def on_raw_reaction_add(ctx):
                 role = guild.get_role(497004207782494218)
             elif ctx.emoji.name == '🔕':
                 role = guild.get_role(603965872456859651)
+            else:
+                return
             await user.add_roles(role)
             await user.send('`' + role.name + '`役職を付与しました。')
 
@@ -99,6 +103,8 @@ async def on_raw_reaction_remove(ctx):
                 role = guild.get_role(497004207782494218)
             elif ctx.emoji.name == '🔕':
                 role = guild.get_role(603965872456859651)
+            else:
+                return
             await user.remove_roles(role)
             await user.send('`' + role.name + '`役職を削除しました。')
 
@@ -339,20 +345,31 @@ async def unmute(ctx):
 
 @bot.command()
 async def join(ctx):
-    voice_client = ctx.message.guild.voice_client
+    global voice_client
     if not voice_client:
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
         await ctx.send('接続')
+        voice_client = ctx.message.guild.voice_client
+        if os.path.isfile('./temp.opus'):
+            subprocess.run(['rm', './temp.opus'])
 
 @bot.command(aliases=['p'])
 async def play(ctx, url):
-    voice_client = ctx.message.guild.voice_client
+    global voice_client
     if not voice_client:
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
         voice_client = ctx.message.guild.voice_client
+        if os.path.isfile('./temp.opus'):
+            subprocess.run(['rm', './temp.opus'])
     await ctx.send('URLを解析中...')
+    if os.path.isfile('./temp.opus'):
+        global waiting
+        global waiting_url
+        if not waiting:
+            waiting = True
+        waiting_url.append(url)
     subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
     source = discord.FFmpegPCMAudio('./temp.opus')
     voice_client.play(source)
@@ -360,10 +377,32 @@ async def play(ctx, url):
 
 @bot.command(aliases=['dis'])
 async def disconnect(ctx):
-    voice_client = ctx.message.guild.voice_client
+    global voice_client
     if voice_client:
-        voice_client.disconnect()
+        await voice_client.disconnect()
         await ctx.send('切断')
+
+@bot.command(aliases=['s'])
+async def skip(ctx):
+    global voice_client
+    if voice_client:
+        voice_client.stop()
+        subprocess.run(['rm', './temp.opus'])
+
+@tasks.loop(seconds=3)
+async def loop():
+    global voice_client
+    global waiting
+    global next_url
+    if waiting:
+        if not voice_client.is_playing():
+            if len(waiting_url) == 1:
+                waiting = False
+            subprocess.run(['rm', './temp.opus'])
+            subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
+            source = discord.FFmpegPCMAudio('./temp.opus')
+            voice_client.play(source)
+            waiting_url.pop(0)
 
 # 2021まで封印
 '''
