@@ -112,6 +112,7 @@ async def on_raw_reaction_remove(ctx):
 
 @bot.listen()
 async def on_resumed():
+    global startup
     now = datetime.datetime.now(
         datetime.timezone(datetime.timedelta(hours=9))
         )
