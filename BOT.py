@@ -17,6 +17,7 @@ loop = 0
 startup = datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=9))
     )
+waiting = False
 waiting_url = []
 
 # 自動
@@ -374,6 +375,7 @@ async def play(ctx, url):
         if not waiting:
             waiting = True
         waiting_url.append(url)
+        await ctx.send('キューに追加')
     else:
         await ctx.send('URLを解析中...')
         subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
@@ -393,18 +395,17 @@ async def skip(ctx):
     global voice_client
     global waiting
     global waiting_url
-    if voice_client:
+    if not voice_client == None:
         voice_client.stop()
         await ctx.send('スキップ')
         if waiting:
-            if not voice_client.is_playing():
-                if len(waiting_url) == 1:
-                    waiting = False
-                subprocess.run(['rm', './temp.opus'])
-                subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
-                source = discord.FFmpegPCMAudio('./temp.opus')
-                voice_client.play(source)
-                waiting_url.pop(0)
+            if len(waiting_url) == 1:
+                waiting = False
+            subprocess.run(['rm', './temp.opus'])
+            subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
+            source = discord.FFmpegPCMAudio('./temp.opus')
+            voice_client.play(source)
+            waiting_url.pop(0)
 
 @bot.command(aliases=['q'])
 async def queue(ctx):
