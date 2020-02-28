@@ -4,14 +4,13 @@ import sys
 import subprocess
 import math
 import discord
-from discord.ext import commands
-from discord.ext import tasks
+import discord.ext
 import datetime
 import time
 import asyncio
 
 # 設定
-bot = commands.Bot(command_prefix='!!')
+bot = discord.ext.commands.Bot(command_prefix='!!')
 bot.remove_command('help')
 startup = datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=9))
@@ -423,7 +422,7 @@ async def queue(ctx):
     else:
         await ctx.send('キューは空です。')
 
-@tasks.loop(seconds=3)
+@discord.ext.tasks.loop(seconds=3)
 async def autonext():
     global voice_client
     global waiting
