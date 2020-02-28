@@ -339,23 +339,31 @@ async def unmute(ctx):
 
 @bot.command()
 async def join(ctx):
-    if not voice:
-        voice = await ctx.author.voice.channel.connect()
+    voice_client = ctx.message.guild.voice_client
+    if not voice_client:
+        voice_channel = ctx.author.voice.channel
+        await voice_channel.connect()
+        await ctx.send('接続')
 
 @bot.command(aliases=['p'])
 async def play(ctx, url):
-    if not voice:
-        voice = await ctx.author.voice.channel.connect()
+    voice_client = ctx.message.guild.voice_client
+    if not voice_client:
+        voice_channel = ctx.author.voice.channel
+        await voice_channel.connect()
+        voice_client = ctx.message.guild.voice_client
     await ctx.send('URLを解析中...')
     subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
     source = discord.FFmpegPCMAudio('./temp.opus')
-    voice.play(source)
-    await ctx.sned('再生')
+    voice_client.play(source)
+    await ctx.send('再生')
 
 @bot.command(aliases=['dis'])
 async def disconnect(ctx):
-    if voice:
-        voice.disconnect()
+    voice_client = ctx.message.guild.voice_client
+    if voice_client:
+        voice_client.disconnect()
+        await ctx.send('切断')
 
 # 2021まで封印
 '''
