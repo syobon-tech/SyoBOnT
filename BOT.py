@@ -4,13 +4,14 @@ import sys
 import subprocess
 import math
 import discord
-import discord.ext
+from discord.ext import commands
+from discord.ext import tasks
 import datetime
 import time
 import asyncio
 
 # 設定
-bot = discord.ext.commands.Bot(command_prefix='!!')
+bot = commands.Bot(command_prefix='!!')
 bot.remove_command('help')
 startup = datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=9))
@@ -375,6 +376,7 @@ async def play(ctx, url):
         if not waiting:
             waiting = True
         waiting_url.append(url)
+        autonext.start()
         await ctx.send('キューに追加しました。')
     else:
         await ctx.send('URLを解析中...')
@@ -389,6 +391,9 @@ async def play(ctx, url):
 async def disconnect(ctx):
     global voice_client
     if voice_client:
+        autonext.stop()
+        waiting = False
+        waiting_url = []
         await voice_client.disconnect()
         await ctx.send('切断しました。')
 
@@ -403,6 +408,7 @@ async def skip(ctx):
         if waiting:
             if len(waiting_url) == 1:
                 waiting = False
+                autonext.stop()
             subprocess.run(['rm', './temp.opus'])
             await ctx.send('次の曲のURLを解析中...')
             result = subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
@@ -422,21 +428,23 @@ async def queue(ctx):
     else:
         await ctx.send('キューは空です。')
 
-@discord.ext.tasks.loop(seconds=3)
+@tasks.loop(seconds=3)
 async def autonext():
     global voice_client
-    global waiting
     global waiting_url
     if waiting:
         print(voice_client.is_playing())
         if not voice_client.is_playing():
-            if len(waiting_url) == 1:
-                waiting = False
             subprocess.run(['rm', './temp.opus'])
             subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
             source = discord.FFmpegPCMAudio('./temp.opus')
             voice_client.play(source)
-            waiting_url.pop(0)
+            if len(waiting_url) == 1:
+                waiting = False
+                waiting_url = []
+                autonext.stop()
+            else:
+                waiting_url.pop(0)
 
 # 2021まで封印
 '''
