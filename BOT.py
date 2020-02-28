@@ -164,16 +164,16 @@ async def help(ctx, tohelp='all'):
     if tohelp == 'join':
         embed = discord.Embed(title='使用方法 ： `!!join`', description='音声チャンネルに入ります。', color=0x3daee9)
         await ctx.send(embed=embed)
-    if tohelp == 'play' or 'p':
+    if tohelp == 'play' or tohelp == 'p':
         embed = discord.Embed(title='使用方法 ： `!!play <URL>`', description='音声チャンネル内で動画を再生します。`!!p <URL>`でもOKです。', color=0x3daee9)
         await ctx.send(embed=embed)
-    if tohelp == 'queue' or 'q':
+    if tohelp == 'queue' or tohelp == 'q':
         embed = discord.Embed(title='使用方法 ： `!!queue`', description='動画再生のキューを表示します。`!!q`でもOKです。', color=0x3daee9)
         await ctx.send(embed=embed)
-    if tohelp == 'skip' or 's':
+    if tohelp == 'skip' or tohelp == 's':
         embed = discord.Embed(title='使用方法 ： `!!skip`', description='再生中の動画をスキップします。`!!s`でもOKです。', color=0x3daee9)
         await ctx.send(embed=embed)
-    if tohelp == 'disconnect' or 'dis':
+    if tohelp == 'disconnect' or tohelp == 'dis':
         embed = discord.Embed(title='使用方法 ： `!!disconnect`', description='音声チャンネルから抜けます。`!!dis`でもOKです。', color=0x3daee9)
         await ctx.send(embed=embed)
     if tohelp == 'mute':
