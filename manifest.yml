@@ -6,3 +6,4 @@ applications:
    path: .
    env:
       PATH: '/bin:/usr/bin:/app'
+      TOKEN: 'NjEwMzU3OTA3OTAwNDY1MTky.XZ1_ew.shpOyVFnjChZnTV1cSzdbh14oJU'

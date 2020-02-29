@@ -488,4 +488,4 @@ async def CountdownStart(ctx):
 '''
 
 # Botの起動とDiscordサーバーへの接続
-bot.run('NjEwMzU3OTA3OTAwNDY1MTky.XZ1_ew.shpOyVFnjChZnTV1cSzdbh14oJU')
+bot.run(os.environ['TOKEN'])
