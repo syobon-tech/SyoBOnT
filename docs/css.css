@@ -1,0 +1,16 @@
+body {
+    background: #36393f;
+    color : #fff;
+    padding: 30px;
+}
+h1 {
+    text-align: center;
+}
+div {
+    background: #2f3136;
+    padding: 30px;
+    border-radius: 10px;
+}
+p {
+    text-indent: 30px;
+}
