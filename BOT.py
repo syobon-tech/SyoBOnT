@@ -108,8 +108,8 @@ async def on_raw_reaction_remove(ctx):
             await user.remove_roles(role)
             await user.send('`' + role.name + '`役職を削除しました。')
 
-@bot.listen()
-async def on_resumed():
+@tasks.loop(hours=24)
+async def checkrenew():
     global startup
     now = datetime.datetime.now(
         datetime.timezone(datetime.timedelta(hours=9))
@@ -118,6 +118,11 @@ async def on_resumed():
     if workdays.days >= 20:
         user = bot.get_user(371837989619499018)
         await user.send('BOT稼働から20日以上が経過しています。Renewしてください。')
+
+@bot.listen()
+async def on_ready:
+    if checkrenew.get_task() is None:
+        checkrenew.start()
 
 # コマンド
 @bot.command()
