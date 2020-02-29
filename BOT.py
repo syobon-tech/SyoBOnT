@@ -120,7 +120,7 @@ async def checkrenew():
         await user.send('BOT稼働から20日以上が経過しています。Renewしてください。')
 
 @bot.listen()
-async def on_ready:
+async def on_ready():
     if checkrenew.get_task() is None:
         checkrenew.start()
 
