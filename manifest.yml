@@ -1,8 +1,0 @@
-applications:
- - name: SyoBOnT-v2
-   random-route: true
-   memory: 128M
-   command: python BOT.py
-   path: .
-   env:
-      PATH: '/bin:/usr/bin:/app'
