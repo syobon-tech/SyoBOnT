@@ -441,7 +441,7 @@ async def skip(ctx):
                     result = subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
                     if result.returncode != 0:
                         await ctx.send('URLの解析に失敗しました。')
-            source = discord.FFmpegPCMAudio('./temp')
+            source = discord.FFmpegPCMAudio('./temp.opus')
             voice_client.play(source)
             await ctx.send('スキップしました。')
             waiting_url.pop(0)
