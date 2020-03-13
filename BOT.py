@@ -387,7 +387,8 @@ async def play(ctx, url=''):
             url = 'メッセージに添付されたファイル'
         global waiting_url
         waiting_url.append(url)
-        autonext.start()
+        if autonext.get_task() is None:
+            autonext.start()
         await ctx.send('キューに追加しました。')
     else:
         if ctx.message.attachments:
