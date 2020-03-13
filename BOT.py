@@ -18,7 +18,7 @@ startup = datetime.datetime.now(
     datetime.timezone(datetime.timedelta(hours=9))
     )
 waiting_url = []
-IsAttachment = False
+waiting_file = []
 
 # 自動
 @bot.listen()
@@ -380,22 +380,19 @@ async def play(ctx, url=''):
         voice_client = ctx.message.guild.voice_client
         if os.path.isfile('./temp.opus'):
             subprocess.run(['rm', './temp.opus'])
-        if os.path.isfile('./down'):
-            subprocess.run(['rm', './down'])
-    if ctx.message.attachments:
-        url = 'メッセージに添付されたファイル'
-        await ctx.send('ファイルをロード中...')
-        await ctx.message.attachments[0].save('down')
     if voice_client.is_playing():
+        if ctx.message.attachments:
+            global waiting_file
+            waiting_file.append(ctx.message.attachments[0])
+            url = 'メッセージに添付されたファイル'
         global waiting_url
         waiting_url.append(url)
         autonext.start()
         await ctx.send('キューに追加しました。')
     else:
-        global IsAttachment
         if ctx.message.attachments:
-            source = discord.FFmpegPCMAudio('./down')
-            IsAttachment = True
+            await ctx.send('ファイルをロード中...')
+            await ctx.message.attachments[0].save('temp.opus')
         else:
             await ctx.send('URLを解析中...')
             if url in '.':
@@ -404,8 +401,7 @@ async def play(ctx, url=''):
                 result = subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
                 if result.returncode != 0:
                     await ctx.send('URLの解析に失敗しました。')
-            source = discord.FFmpegPCMAudio('./temp.opus')
-            IsAttachment = False
+        source = discord.FFmpegPCMAudio('./temp.opus')
         voice_client.play(source)
         await ctx.send('再生開始しました。')
 
@@ -418,8 +414,6 @@ async def disconnect(ctx):
         waiting_url = []
         if os.path.isfile('./temp.opus'):
             subprocess.run(['rm', './temp.opus'])
-        if os.path.isfile('./down'):
-            subprocess.run(['rm', 'down'])
         await voice_client.disconnect()
         await ctx.send('切断しました。')
 
@@ -427,21 +421,18 @@ async def disconnect(ctx):
 async def skip(ctx):
     global voice_client
     global waiting_url
-    global IsAttachment
+    global waiting_file
     if not voice_client == None:
         voice_client.stop()
         await ctx.send('スキップします。')
         if len(waiting_url) != 0:
             if len(waiting_url) == 1:
                 autonext.stop()
-            if IsAttachment:
-                subprocess.run(['rm', './down'])
-            else:
-                subprocess.run(['rm', './temp.opus'])
+            subprocess.run(['rm', './temp.opus'])
             await ctx.send('次の曲のURLを解析中...')
             if waiting_url[0] == 'メッセージに添付されたファイル':
-                source = discord.FFmpegPCMAudio('./down')
-                IsAttachment = True
+                await waiting_file[0].save('temp.opus')
+                waiting_file.pop(0)
             else:
                 if waiting_url[0] in '.':
                     urllib.request.urlretrieve(waiting_url[0], 'temp.opus')
@@ -449,8 +440,7 @@ async def skip(ctx):
                     result = subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
                     if result.returncode != 0:
                         await ctx.send('URLの解析に失敗しました。')
-                source = discord.FFmpegPCMAudio('./temp')
-                IsAttachment = False
+            source = discord.FFmpegPCMAudio('./temp')
             voice_client.play(source)
             await ctx.send('スキップしました。')
             waiting_url.pop(0)
@@ -475,7 +465,11 @@ async def remove(ctx, number:int):
     number -= 1
     if len(waiting_url) >= number:
         if waiting_url[number] == 'メッセージに添付されたファイル':
-            subprocess.run(['rm', './down'])
+            files = 0
+            for i in range(0, number - 1):
+                if waiting_url[i] == 'メッセージに添付されたファイル':
+                    files += 1
+            del waiting_file[files]
         del waiting_url[number]
         ctx.send('キューから' + str(number) + '番を削除しました。')
 
@@ -483,22 +477,16 @@ async def remove(ctx, number:int):
 async def autonext():
     global voice_client
     global waiting_url
-    global IsAttachment
     if not voice_client.is_playing():
-        if IsAttachment:
-            subprocess.run(['rm', './down'])
-        else:
-            subprocess.run(['rm', './temp.opus'])
+        subprocess.run(['rm', './temp.opus'])
         if waiting_url[0] == 'メッセージに添付されたファイル':
-            source = discord.FFmpegPCMAudio('./down')
-            IsAttachment = True
+            await waiting_file[0].save('temp.opus')
         else:
             if waiting_url[0] in '.':
                 urllib.request.urlretrieve(waiting_url[0], 'temp.opus')
             else:
                 subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
-            source = discord.FFmpegPCMAudio('./temp.opus')
-            IsAttachment = False
+        source = discord.FFmpegPCMAudio('./temp.opus')
         voice_client.play(source)
         if len(waiting_url) == 1:
             waiting_url = []
