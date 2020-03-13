@@ -369,7 +369,7 @@ async def join(ctx):
             subprocess.run(['rm', './temp.opus'])
 
 @bot.command(aliases=['p'])
-async def play(ctx, url):
+async def play(ctx, url=''):
     global voice_client
     try:
         voice_client
@@ -377,8 +377,8 @@ async def play(ctx, url):
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
         voice_client = ctx.message.guild.voice_client
-        if os.path.isfile('./temp'):
-            subprocess.run(['rm', './temp'])
+    if os.path.isfile('./temp'):
+        subprocess.run(['rm', './temp'])
     if ctx.message.attachments:
         url = ctx.message.attachments[0].url
     if os.path.isfile('./temp'):
