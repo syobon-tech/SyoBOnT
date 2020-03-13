@@ -385,7 +385,7 @@ async def play(ctx, url=''):
     if ctx.message.attachments:
         url = 'メッセージに添付されたファイル'
         await ctx.send('ファイルをロード中...')
-        ctx.message.attachments[0].save('down')
+        await ctx.message.attachments[0].save('down')
     if os.path.isfile('./temp'):
         global waiting_url
         waiting_url.append(url)
