@@ -386,7 +386,7 @@ async def play(ctx, url=''):
         url = 'メッセージに添付されたファイル'
         await ctx.send('ファイルをロード中...')
         await ctx.message.attachments[0].save('down')
-    if os.path.isfile('./temp'):
+    if voice_client.is_playing():
         global waiting_url
         waiting_url.append(url)
         autonext.start()
