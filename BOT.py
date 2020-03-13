@@ -115,9 +115,9 @@ async def checkrenew():
         datetime.timezone(datetime.timedelta(hours=9))
         )
     workdays = now - startup
-    if workdays.days >= 20:
+    if workdays.days >= 9:
         user = bot.get_user(371837989619499018)
-        await user.send('BOT稼働から20日以上が経過しています。Renewしてください。')
+        await user.send('BOT稼働から9日が経過しました。Renewしてください。')
 
 @bot.listen()
 async def on_ready():
