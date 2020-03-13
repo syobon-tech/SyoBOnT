@@ -452,7 +452,7 @@ async def queue(ctx):
         text = 'キュー：\n```\n'
         i = 1
         for url in waiting_url:
-            text += i + ' : ' + url + '\n'
+            text += str(i) + ' : ' + url + '\n'
             i += 1
         text += '```'
         await ctx.send(text)
