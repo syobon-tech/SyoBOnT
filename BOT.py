@@ -9,6 +9,7 @@ from discord.ext import tasks
 import datetime
 import time
 import asyncio
+import urllib.request
 
 # 設定
 bot = commands.Bot(command_prefix='!!')
@@ -376,19 +377,24 @@ async def play(ctx, url):
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
         voice_client = ctx.message.guild.voice_client
-        if os.path.isfile('./temp.opus'):
-            subprocess.run(['rm', './temp.opus'])
-    if os.path.isfile('./temp.opus'):
+        if os.path.isfile('./temp'):
+            subprocess.run(['rm', './temp'])
+    if ctx.message.attachments:
+        url = ctx.message.attachments[0].url
+    if os.path.isfile('./temp'):
         global waiting_url
         waiting_url.append(url)
         autonext.start()
         await ctx.send('キューに追加しました。')
     else:
         await ctx.send('URLを解析中...')
-        result = subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
-        if result.returncode != 0:
+        if url in '.':
+            urllib.request.urlretrieve(url, 'temp')
+        else:
+            result = subprocess.run(['python', './youtube-dl', url, '-x', '-q', '-o', './temp'])
+            if result.returncode != 0:
                 await ctx.send('URLの解析に失敗しました。')
-        source = discord.FFmpegPCMAudio('./temp.opus')
+        source = discord.FFmpegPCMAudio('./temp')
         voice_client.play(source)
         await ctx.send('再生開始しました。')
 
@@ -412,12 +418,15 @@ async def skip(ctx):
         if len(waiting_url) != 0:
             if len(waiting_url) == 1:
                 autonext.stop()
-            subprocess.run(['rm', './temp.opus'])
+            subprocess.run(['rm', './temp'])
             await ctx.send('次の曲のURLを解析中...')
-            result = subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
-            if result.returncode != 0:
-                await ctx.send('URLの解析に失敗しました。')
-            source = discord.FFmpegPCMAudio('./temp.opus')
+            if waiting_url[0] in '.':
+                urllib.request.urlretrieve(waiting_url[0], 'temp')
+            else:
+                result = subprocess.run(['python', './youtube-dl', waiting_url[0], '-x', '-q', '-o', './temp'])
+                if result.returncode != 0:
+                    await ctx.send('URLの解析に失敗しました。')
+            source = discord.FFmpegPCMAudio('./temp')
             voice_client.play(source)
             await ctx.send('スキップしました。')
             waiting_url.pop(0)
@@ -426,18 +435,35 @@ async def skip(ctx):
 async def queue(ctx):
     global waiting_url
     if len(waiting_url) != 0:
-        await ctx.send('キュー：\n' + '\n'.join(waiting_url))
+        text = 'キュー：\n```\n'
+        i = 1
+        for url in waiting_url:
+            text += i + ' : ' + url + '\n'
+            i += 1
+        text += '```'
+        await ctx.send(text)
     else:
         await ctx.send('キューは空です。')
+
+@bot.command(aliases=['rm'])
+async def remove(ctx, number:int):
+    global waiting_url
+    number -= 1
+    if len(waiting_url) >= number:
+        del waiting_url[number]
+        ctx.send('キューから' + str(number) + '番を削除しました。')
 
 @tasks.loop(seconds=3)
 async def autonext():
     global voice_client
     global waiting_url
     if not voice_client.is_playing():
-        subprocess.run(['rm', './temp.opus'])
-        subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp.opus'])
-        source = discord.FFmpegPCMAudio('./temp.opus')
+        subprocess.run(['rm', './temp'])
+        if waiting_url[0] in '.':
+            urllib.request.urlretrieve(waiting_url[0], 'temp')
+        else:
+            subprocess.run(['python', './youtube-dl', waiting_url[0], '-x', '-q', '-o', './temp'])
+        source = discord.FFmpegPCMAudio('./temp')
         voice_client.play(source)
         if len(waiting_url) == 1:
             waiting_url = []
