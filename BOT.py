@@ -377,8 +377,8 @@ async def play(ctx, url=''):
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
         voice_client = ctx.message.guild.voice_client
-    if os.path.isfile('./temp'):
-        subprocess.run(['rm', './temp'])
+        if os.path.isfile('./temp'):
+            subprocess.run(['rm', './temp'])
     if ctx.message.attachments:
         url = ctx.message.attachments[0].url
     if os.path.isfile('./temp'):
@@ -391,7 +391,7 @@ async def play(ctx, url=''):
         if url in '.':
             urllib.request.urlretrieve(url, 'temp')
         else:
-            result = subprocess.run(['python', './youtube-dl', url, '-x', '-q', '-o', './temp'])
+            result = subprocess.run(['python', './youtube-dl', url, '--audio-format', 'opus', '-x', '-q', '-o', './temp'])
             if result.returncode != 0:
                 await ctx.send('URLの解析に失敗しました。')
         source = discord.FFmpegPCMAudio('./temp')
@@ -423,7 +423,7 @@ async def skip(ctx):
             if waiting_url[0] in '.':
                 urllib.request.urlretrieve(waiting_url[0], 'temp')
             else:
-                result = subprocess.run(['python', './youtube-dl', waiting_url[0], '-x', '-q', '-o', './temp'])
+                result = subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp'])
                 if result.returncode != 0:
                     await ctx.send('URLの解析に失敗しました。')
             source = discord.FFmpegPCMAudio('./temp')
@@ -462,7 +462,7 @@ async def autonext():
         if waiting_url[0] in '.':
             urllib.request.urlretrieve(waiting_url[0], 'temp')
         else:
-            subprocess.run(['python', './youtube-dl', waiting_url[0], '-x', '-q', '-o', './temp'])
+            subprocess.run(['python', './youtube-dl', waiting_url[0], '--audio-format', 'opus', '-x', '-q', '-o', './temp'])
         source = discord.FFmpegPCMAudio('./temp')
         voice_client.play(source)
         if len(waiting_url) == 1:
