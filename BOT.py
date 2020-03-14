@@ -371,6 +371,8 @@ async def join(ctx):
 
 @bot.command(aliases=['p'])
 async def play(ctx, url=''):
+    if url == '' and not ctx.message.attachments:
+        ctx.send('URLを指定するか、ファイルを添付してください。')
     global voice_client
     try:
         voice_client
@@ -430,11 +432,12 @@ async def skip(ctx):
             if len(waiting_url) == 1:
                 autonext.stop()
             subprocess.run(['rm', './temp.opus'])
-            await ctx.send('次の曲のURLを解析中...')
             if waiting_url[0] == 'メッセージに添付されたファイル':
+                await ctx.send('ファイルをロード中...')
                 await waiting_file[0].save('temp.opus')
                 waiting_file.pop(0)
             else:
+                await ctx.send('次の曲のURLを解析中...')
                 if waiting_url[0] in '.':
                     urllib.request.urlretrieve(waiting_url[0], 'temp.opus')
                 else:
