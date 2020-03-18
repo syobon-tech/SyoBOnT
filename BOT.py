@@ -10,6 +10,7 @@ import datetime
 import time
 import asyncio
 import urllib.request
+import random
 
 # 設定
 bot = commands.Bot(command_prefix='!!')
@@ -355,6 +356,19 @@ async def unmute(ctx):
         user = ctx.message.mentions
         await user[0].remove_roles(muted)
         await channel.send(user[0].name + 'さんのMuteが解除されました。')
+
+@bot.command()
+async def shingekin(ctx, number=-1):
+    if number == -1:
+        number = random.randint(0, 16)
+    else:
+        number -= 1
+    filepath = '/app/shingekin' + str(number) + '.jpg'
+    with open(filepath, "rb") as f:
+        ctx.send(file=f)
+
+
+
 
 @bot.command()
 async def join(ctx):
