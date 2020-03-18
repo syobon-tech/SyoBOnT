@@ -363,7 +363,7 @@ async def shingekin(ctx, number=-1):
         number = random.randint(0, 16)
     else:
         number -= 1
-    filepath = '/app/shingekin' + str(number) + '.jpg'
+    filepath = '/app/shingekin/' + str(number) + '.jpg'
     with open(filepath, "rb") as f:
         ctx.send(file=f)
 
