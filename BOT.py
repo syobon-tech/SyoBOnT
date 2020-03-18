@@ -363,7 +363,7 @@ async def shingekin(ctx, number=-1):
         number = random.randint(1, 17)
     filepath = '/app/shingekin/' + str(number) + '.jpg'
     with open(filepath, "rb") as f:
-        await ctx.send(file=f)
+        await ctx.send(file=discord.File(fp=f))
 
 
 
