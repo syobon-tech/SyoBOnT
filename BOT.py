@@ -360,9 +360,7 @@ async def unmute(ctx):
 @bot.command()
 async def shingekin(ctx, number=-1):
     if number == -1:
-        number = random.randint(0, 16)
-    else:
-        number -= 1
+        number = random.randint(1, 17)
     filepath = '/app/shingekin/' + str(number) + '.jpg'
     with open(filepath, "rb") as f:
         await ctx.send(file=f)
