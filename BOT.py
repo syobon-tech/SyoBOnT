@@ -365,7 +365,7 @@ async def shingekin(ctx, number=-1):
         number -= 1
     filepath = '/app/shingekin/' + str(number) + '.jpg'
     with open(filepath, "rb") as f:
-        ctx.send(file=f)
+        await ctx.send(file=f)
 
 
 
