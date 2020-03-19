@@ -359,11 +359,12 @@ async def unmute(ctx):
 
 @bot.command()
 async def shingekin(ctx, number=-1):
-    if number == -1:
-        number = random.randint(1, 17)
-    filepath = '/app/shingekin/' + str(number) + '.jpg'
-    with open(filepath, "rb") as f:
-        await ctx.send(file=discord.File(fp=f))
+    if ctx.channel.id == 624886257771872256:
+        if number == -1:
+            number = random.randint(1, 17)
+        filepath = '/app/shingekin/' + str(number) + '.jpg'
+        with open(filepath, "rb") as f:
+            await ctx.send(file=discord.File(fp=f))
 
 
 
