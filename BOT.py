@@ -126,7 +126,7 @@ async def checkrenew():
 @tasks.loop(hours=168)
 async def resetshingekined():
     global shingekined
-    shingekined = false
+    shingekined = False
 
 @bot.listen()
 async def on_ready():
