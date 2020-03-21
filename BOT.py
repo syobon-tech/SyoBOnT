@@ -20,6 +20,7 @@ startup = datetime.datetime.now(
     )
 waiting_url = []
 waiting_file = []
+shingekined = False
 
 # 自動
 @bot.listen()
@@ -122,10 +123,17 @@ async def checkrenew():
         user = bot.get_user(371837989619499018)
         await user.send('BOT稼働から9日が経過しました。Renewしてください。')
 
+@tasks.loop(hours=168)
+async def resetshingekined():
+    global shingekined
+    shingekined = false
+
 @bot.listen()
 async def on_ready():
     if checkrenew.get_task() is None:
         checkrenew.start()
+    if resetshingekined.get_task() is None:
+        resetshingekined.start()
 
 # コマンド
 @bot.command()
@@ -360,11 +368,16 @@ async def unmute(ctx):
 @bot.command()
 async def shingekin(ctx, number=-1):
     if ctx.channel.id == 624886257771872256:
-        if number == -1:
-            number = random.randint(1, 17)
-        filepath = '/app/shingekin/' + str(number) + '.jpg'
-        with open(filepath, "rb") as f:
-            await ctx.send(file=discord.File(fp=f))
+        global shingekined
+        if shingekined:
+            await ctx.send('1週間以内に`!shingekin`コマンドが実行されています。時間を開けて再試行してください。')
+        else:
+            shingekined = True
+            if number == -1:
+                number = random.randint(1, 17)
+            filepath = '/app/shingekin/' + str(number) + '.jpg'
+            with open(filepath, "rb") as f:
+                await ctx.send(file=discord.File(fp=f))
 
 
 
