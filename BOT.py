@@ -56,9 +56,6 @@ async def on_raw_reaction_add(ctx):
         if ctx.guild_id == 486487795293093888:
             guild = bot.get_guild(486487795293093888)
             user = guild.get_member(ctx.user_id)
-            if ctx.emoji.name == '🎮':
-                role = guild.get_role(601947434561699872)
-            elif ctx.emoji.name == 'grass_block':
                 role = guild.get_role(506793691978137601)
             elif ctx.emoji.name == '🎵':
                 role = guild.get_role(499891499761270826)
@@ -87,9 +84,6 @@ async def on_raw_reaction_remove(ctx):
         if ctx.guild_id == 486487795293093888:
             guild = bot.get_guild(486487795293093888)
             user = guild.get_member(ctx.user_id)
-            if ctx.emoji.name == '🎮':
-                role = guild.get_role(601947434561699872)
-            elif ctx.emoji.name == 'grass_block':
                 role = guild.get_role(506793691978137601)
             elif ctx.emoji.name == '🎵':
                 role = guild.get_role(499891499761270826)
