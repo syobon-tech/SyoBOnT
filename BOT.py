@@ -516,6 +516,7 @@ async def autonext():
         else:
             waiting_url.pop(0)
 
+
 # 2021まで封印
 '''
 @bot.command()
